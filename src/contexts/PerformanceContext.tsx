@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode } from "react";
 import PerformanceMonitor from "../components/PerformanceMonitor";
 
 const PerformanceContext = createContext<{ showMonitor: boolean }>({
@@ -17,5 +17,3 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
     </PerformanceContext.Provider>
   );
 }
-
-export const usePerformance = () => useContext(PerformanceContext);

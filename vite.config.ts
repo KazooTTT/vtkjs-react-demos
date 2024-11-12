@@ -11,6 +11,10 @@ export default defineConfig({
     tsconfigPaths(),
     Pages(),
     checker({
+      eslint: {
+        useFlatConfig: true,
+        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+      },
       typescript: true,
     }),
   ],

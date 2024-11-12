@@ -24,10 +24,14 @@ function App() {
   const [representation, setRepresentation] = useState(2);
 
   useEffect(() => {
+    // init，因此需要判断context是否为空以及目标元素是否存在
     if (!context.current && vtkContainerRef.current) {
+      // 创建一个全屏渲染窗口
       const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({
         container: vtkContainerRef.current,
       });
+
+      // 创建一个圆锥源
       const coneSource = vtkConeSource.newInstance({ height: 1.0 });
 
       const mapper = vtkMapper.newInstance();
@@ -68,8 +72,10 @@ function App() {
 
   useEffect(() => {
     if (context.current) {
+      // 监听resolution的变化，如果变化则更新coneSource的resolution
       const { coneSource, renderWindow } = context.current;
       coneSource.setResolution(coneResolution);
+      // 重新渲染
       renderWindow.render();
     }
   }, [coneResolution]);
