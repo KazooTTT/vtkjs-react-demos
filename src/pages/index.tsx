@@ -89,7 +89,7 @@ function App() {
   }, [representation]);
 
   return (
-    <div className="w-full h-screen relative">
+    <div className="w-full h-screen relative overflow-hidden">
       <div ref={vtkContainerRef} className="w-full h-full" />
       <table className="absolute top-[25px] left-[25px] bg-white p-[12px] rounded">
         <tbody>
