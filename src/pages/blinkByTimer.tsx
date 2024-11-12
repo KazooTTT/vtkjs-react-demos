@@ -5,7 +5,7 @@ import vtkRenderWindow from "@kitware/vtk.js/Rendering/Core/RenderWindow";
 import vtkRenderer from "@kitware/vtk.js/Rendering/Core/Renderer";
 import vtkGenericRenderWindow from "@kitware/vtk.js/Rendering/Misc/GenericRenderWindow";
 import "@kitware/vtk.js/Rendering/Profiles/Geometry";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type VtkContext = {
   fullScreenRenderer: vtkGenericRenderWindow;
@@ -88,34 +88,39 @@ function BlinkPage() {
   }, []);
 
   // 修改闪烁动画函数
-  const animate = (timestamp: number) => {
-    if (!context.current) return;
+  const animate = useCallback(
+    (timestamp: number) => {
+      if (!context.current) return;
 
-    if (!lastToggleTime.current) {
-      lastToggleTime.current = timestamp;
-    }
+      if (!lastToggleTime.current) {
+        lastToggleTime.current = timestamp;
+      }
 
-    const elapsed = timestamp - lastToggleTime.current;
+      const elapsed = timestamp - lastToggleTime.current;
 
-    if (elapsed >= BLINK_INTERVAL) {
-      const { sphereActor, renderWindow } = context.current;
-      // 获取当前颜色
-      const currentColor = sphereActor.getProperty().getColor();
-      // 在红色和黄色之间切换
-      const newColor: [number, number, number] =
-        currentColor[0] === 1.0 && currentColor[1] === 0.0
-          ? [1.0, 1.0, 0.0] // 黄色
-          : [1.0, 0.0, 0.0]; // 红色
+      if (elapsed >= BLINK_INTERVAL) {
+        const { sphereActor, renderWindow } = context.current;
+        // 获取当前颜色
+        const currentColor = sphereActor.getProperty().getColor();
+        // 在红色和黄色之间切换
+        const newColor: [number, number, number] =
+          currentColor[0] === 1.0 && currentColor[1] === 0.0
+            ? [1.0, 1.0, 0.0] // 黄色
+            : [1.0, 0.0, 0.0]; // 红色
 
-      sphereActor.getProperty().setColor(newColor[0], newColor[1], newColor[2]);
-      renderWindow.render();
-      lastToggleTime.current = timestamp;
-    }
+        sphereActor
+          .getProperty()
+          .setColor(newColor[0], newColor[1], newColor[2]);
+        renderWindow.render();
+        lastToggleTime.current = timestamp;
+      }
 
-    if (isBlinking) {
-      animationFrameId.current = requestAnimationFrame(animate);
-    }
-  };
+      if (isBlinking) {
+        animationFrameId.current = requestAnimationFrame(animate);
+      }
+    },
+    [isBlinking]
+  );
 
   // 修改停止闪烁时的处理
   useEffect(() => {
@@ -139,7 +144,7 @@ function BlinkPage() {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [isBlinking]);
+  }, [animate, isBlinking]);
 
   return (
     <div className="w-full h-screen relative overflow-hidden">

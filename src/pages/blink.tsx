@@ -119,29 +119,13 @@ function BlinkPage() {
   }, [isBlinking]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <div ref={vtkContainerRef} style={{ width: "100%", height: "100%" }} />
+    <div className="w-full h-screen relative overflow-hidden">
+      <div ref={vtkContainerRef} className="w-full h-full" />
       <button
         onClick={() => setIsBlinking(!isBlinking)}
-        style={{
-          position: "absolute",
-          top: "25px",
-          left: "25px",
-          padding: "8px 16px",
-          backgroundColor: isBlinking ? "#ff4d4f" : "#52c41a",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontSize: "16px",
-        }}
+        className={`absolute top-[25px] left-[25px] py-[8px] px-[16px] ${
+          isBlinking ? "bg-[#ff4d4f]" : "bg-[#52c41a]"
+        } text-white border-none rounded cursor-pointer text-[16px]`}
       >
         {isBlinking ? "停止" : "开始"}
       </button>
