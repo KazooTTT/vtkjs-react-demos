@@ -98,7 +98,7 @@ function PerformanceMonitor() {
         overflow: "hidden",
       }}
     >
-      <div 
+      <div
         onClick={() => setIsCollapsed(!isCollapsed)}
         style={{
           display: "flex",
@@ -107,9 +107,7 @@ function PerformanceMonitor() {
           userSelect: "none",
         }}
       >
-        <span style={{ marginRight: "5px" }}>
-          {isCollapsed ? "▶" : "▼"}
-        </span>
+        <span style={{ marginRight: "5px" }}>{isCollapsed ? "▶" : "▼"}</span>
         <span>Performance Monitor</span>
       </div>
       {!isCollapsed && (
