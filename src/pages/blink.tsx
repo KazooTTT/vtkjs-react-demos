@@ -21,7 +21,7 @@ function BlinkPage() {
   const context = useRef<VtkContext>(null);
   const timerRef = useRef<TimeoutHandle>();
   const [isBlinking, setIsBlinking] = useState(false);
-  const BLINK_INTERVAL = 500; // 闪烁间隔时间（毫秒）
+  const BLINK_INTERVAL = 500; // Blink interval time (milliseconds)
 
   useEffect(() => {
     if (!context.current && vtkContainerRef.current) {
@@ -47,7 +47,7 @@ function BlinkPage() {
 
       const sphereActor = vtkActor.newInstance();
       sphereActor.setMapper(mapper);
-      sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // 红色
+      sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // Red
 
       renderer.addActor(sphereActor);
       renderer.resetCamera();
@@ -83,7 +83,7 @@ function BlinkPage() {
     }
   }, []);
 
-  // 使用 setInterval 控制闪烁
+  // Use setInterval to control blinking
   useEffect(() => {
     if (isBlinking && context.current) {
       timerRef.current = setInterval(() => {
@@ -91,8 +91,8 @@ function BlinkPage() {
         const currentColor = sphereActor.getProperty().getColor();
         const newColor: [number, number, number] =
           currentColor[0] === 1.0 && currentColor[1] === 0.0
-            ? [1.0, 1.0, 0.0] // 黄色
-            : [1.0, 0.0, 0.0]; // 红色
+            ? [1.0, 1.0, 0.0] // Yellow
+            : [1.0, 0.0, 0.0]; // Red
 
         sphereActor
           .getProperty()
@@ -103,10 +103,10 @@ function BlinkPage() {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
-      // 停止时将球体设置为红色
+      // Set sphere color to red when stopped
       if (context.current) {
         const { sphereActor, renderWindow } = context.current;
-        sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // 红色
+        sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // Red
         renderWindow.render();
       }
     }
@@ -127,7 +127,7 @@ function BlinkPage() {
           isBlinking ? "bg-[#ff4d4f]" : "bg-[#52c41a]"
         } text-white border-none rounded cursor-pointer text-[16px]`}
       >
-        {isBlinking ? "停止" : "开始"}
+        {isBlinking ? "stop" : "start"}
       </button>
     </div>
   );

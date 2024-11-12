@@ -20,24 +20,24 @@ function BlinkPage() {
   const animationFrameId = useRef<number>();
   const [isBlinking, setIsBlinking] = useState(false);
   const lastToggleTime = useRef<number>(0);
-  const BLINK_INTERVAL = 500; // 闪烁间隔时间（毫秒）
+  const BLINK_INTERVAL = 500; // Blink interval time (milliseconds)
 
   useEffect(() => {
     if (!context.current && vtkContainerRef.current) {
       const genericRenderer = vtkGenericRenderWindow.newInstance();
       const container = vtkContainerRef.current;
 
-      // 初始化 genericRenderer
+      // Initialize genericRenderer
       genericRenderer.setContainer(container);
       genericRenderer.resize();
 
       const renderer = genericRenderer.getRenderer();
       const renderWindow = genericRenderer.getRenderWindow();
 
-      // 设置背景色
+      // Set background color
       renderer.setBackground(0.1, 0.1, 0.1);
 
-      // 创建球体
+      // Create sphere
       const sphereSource = vtkSphereSource.newInstance({
         radius: 0.5,
         thetaResolution: 36,
@@ -49,7 +49,7 @@ function BlinkPage() {
 
       const sphereActor = vtkActor.newInstance();
       sphereActor.setMapper(mapper);
-      sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // 红色
+      sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // Red
 
       renderer.addActor(sphereActor);
       renderer.resetCamera();
@@ -62,7 +62,7 @@ function BlinkPage() {
         sphereActor,
       };
 
-      // 添加窗口大小变化的监听
+      // Add window resize observer
       const resizeObserver = new ResizeObserver(() => {
         if (container) {
           genericRenderer.resize();
@@ -72,7 +72,7 @@ function BlinkPage() {
 
       resizeObserver.observe(container);
 
-      // 清理函数中添加 resizeObserver 的清理
+      // Cleanup function to remove resizeObserver
       return () => {
         if (context.current) {
           const { fullScreenRenderer } = context.current;
@@ -87,7 +87,7 @@ function BlinkPage() {
     }
   }, []);
 
-  // 修改闪烁动画函数
+  // Modify blink animation function
   const animate = useCallback(
     (timestamp: number) => {
       if (!context.current) return;
@@ -100,13 +100,13 @@ function BlinkPage() {
 
       if (elapsed >= BLINK_INTERVAL) {
         const { sphereActor, renderWindow } = context.current;
-        // 获取当前颜色
+        // Get current color
         const currentColor = sphereActor.getProperty().getColor();
-        // 在红色和黄色之间切换
+        // Toggle between red and yellow
         const newColor: [number, number, number] =
           currentColor[0] === 1.0 && currentColor[1] === 0.0
-            ? [1.0, 1.0, 0.0] // 黄色
-            : [1.0, 0.0, 0.0]; // 红色
+            ? [1.0, 1.0, 0.0] // Yellow
+            : [1.0, 0.0, 0.0]; // Red
 
         sphereActor
           .getProperty()
@@ -122,7 +122,7 @@ function BlinkPage() {
     [isBlinking]
   );
 
-  // 修改停止闪烁时的处理
+  // Modify handling when stopping blinking
   useEffect(() => {
     if (isBlinking) {
       lastToggleTime.current = 0;
@@ -131,10 +131,10 @@ function BlinkPage() {
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
       }
-      // 停止时将球体设置为红色
+      // Set sphere color to red when stopped
       if (context.current) {
         const { sphereActor, renderWindow } = context.current;
-        sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // 红色
+        sphereActor.getProperty().setColor(1.0, 0.0, 0.0); // Red
         renderWindow.render();
       }
     }
@@ -155,7 +155,7 @@ function BlinkPage() {
           isBlinking ? "bg-[#ff4d4f]" : "bg-[#52c41a]"
         } text-white border-none rounded cursor-pointer text-[16px]`}
       >
-        {isBlinking ? "停止" : "开始"}
+        {isBlinking ? "stop" : "start"}
       </button>
     </div>
   );

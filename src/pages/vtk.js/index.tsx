@@ -7,7 +7,7 @@ import vtkFullScreenRenderWindow from "@kitware/vtk.js/Rendering/Misc/FullScreen
 import "@kitware/vtk.js/Rendering/Profiles/Geometry";
 import { useEffect, useRef, useState } from "react";
 
-// 定义context的类型
+// Define the type for context
 type VtkContext = {
   fullScreenRenderer: vtkFullScreenRenderWindow;
   renderWindow: vtkRenderWindow;
@@ -24,14 +24,14 @@ function App() {
   const [representation, setRepresentation] = useState(2);
 
   useEffect(() => {
-    // init，因此需要判断context是否为空以及目标元素是否存在
+    // Initialize, check if context is null and target element exists
     if (!context.current && vtkContainerRef.current) {
-      // 创建一个全屏渲染窗口
+      // Create a full-screen render window
       const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({
         container: vtkContainerRef.current,
       });
 
-      // 创建一个圆锥源
+      // Create a cone source
       const coneSource = vtkConeSource.newInstance({ height: 1.0 });
 
       const mapper = vtkMapper.newInstance();
@@ -72,10 +72,10 @@ function App() {
 
   useEffect(() => {
     if (context.current) {
-      // 监听resolution的变化，如果变化则更新coneSource的resolution
+      // Listen for changes in resolution and update coneSource's resolution
       const { coneSource, renderWindow } = context.current;
       coneSource.setResolution(coneResolution);
-      // 重新渲染
+      // Re-render
       renderWindow.render();
     }
   }, [coneResolution]);
@@ -89,24 +89,15 @@ function App() {
   }, [representation]);
 
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative" }}>
-      <div ref={vtkContainerRef} style={{ width: "100%", height: "100%" }} />
-      <table
-        style={{
-          position: "absolute",
-          top: "25px",
-          left: "25px",
-          background: "white",
-          padding: "12px",
-          borderRadius: "4px",
-        }}
-      >
+    <div className="w-full h-screen relative">
+      <div ref={vtkContainerRef} className="w-full h-full" />
+      <table className="absolute top-[25px] left-[25px] bg-white p-[12px] rounded">
         <tbody>
           <tr>
             <td>
               <select
                 value={representation}
-                style={{ width: "100%", padding: "4px" }}
+                className="w-full p-[4px]"
                 onChange={(ev) => setRepresentation(Number(ev.target.value))}
               >
                 <option value="0">Points</option>
@@ -123,7 +114,7 @@ function App() {
                 max="80"
                 value={coneResolution}
                 onChange={(ev) => setConeResolution(Number(ev.target.value))}
-                style={{ width: "100%" }}
+                className="w-full"
               />
             </td>
           </tr>

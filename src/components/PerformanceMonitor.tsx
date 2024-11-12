@@ -81,37 +81,19 @@ function PerformanceMonitor() {
 
   return (
     <div
-      style={{
-        position: "fixed",
-        top: "25px",
-        right: "25px",
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
-        padding: "10px",
-        borderRadius: "4px",
-        color: "white",
-        fontFamily: "monospace",
-        fontSize: "12px",
-        zIndex: 9999,
-        cursor: "pointer",
-        transition: "all 0.3s ease",
-        maxHeight: isCollapsed ? "20px" : "200px",
-        overflow: "hidden",
-      }}
+      className={`fixed top-[25px] right-[25px] bg-black bg-opacity-70 p-[10px] rounded text-white font-mono text-[12px] z-[9999] cursor-pointer transition-all duration-300 ease-in-out max-h-[${
+        isCollapsed ? "20px" : "200px"
+      }] overflow-hidden`}
     >
       <div
         onClick={() => setIsCollapsed(!isCollapsed)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "8px",
-          userSelect: "none",
-        }}
+        className="flex items-center mb-[8px] select-none"
       >
-        <span style={{ marginRight: "5px" }}>{isCollapsed ? "▶" : "▼"}</span>
+        <span className="mr-[5px]">{isCollapsed ? "▶" : "▼"}</span>
         <span>Performance Monitor</span>
       </div>
       {!isCollapsed && (
-        <div style={{ paddingLeft: "15px" }}>
+        <div className="pl-[15px]">
           <div>FPS: {stats.fps}</div>
           <div>Frame Time: {stats.frameTime.toFixed(2)} ms</div>
           <div>CPU Time: {stats.cpuUsage.toFixed(2)} ms</div>
