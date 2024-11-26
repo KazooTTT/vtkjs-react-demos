@@ -18,7 +18,7 @@ function PerformanceMonitor() {
     cpuUsage: 0,
     canvasCount: 0,
   });
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const frameCount = useRef(0);
   const lastTime = useRef(performance.now());
